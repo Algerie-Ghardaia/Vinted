@@ -7,13 +7,7 @@ app.use(express.json());
 
 const mongoose = require("mongoose");
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then((response) => {
-    console.log("isOk");
-  })
-  .catch((error) => {
-    console.log({ error: error.message });
-  });
+  .connect(process.env.MONGODB_URI);
 
 //======== CLOUDINARY =================//
 const cloudinary = require("cloudinary").v2;
