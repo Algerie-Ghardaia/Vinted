@@ -128,6 +128,4 @@ router.get("/offers", async (req, res) => {
 });
 //===========// FIND ARTICLE BY  //================//
 
-
 module.exports = router;
-
