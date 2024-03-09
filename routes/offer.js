@@ -55,7 +55,7 @@ router.post(
           },
         ],
         product_image: cloudinaryRes,
-        owner: req.user._id,
+        owner: req.user,
       });
 
       await newOffer.save();
