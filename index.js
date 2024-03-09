@@ -1,4 +1,3 @@
-
 const cors = require("cors");
 const express = require("express");
 const app = express();
@@ -7,7 +6,13 @@ app.use(express.json());
 
 const mongoose = require("mongoose");
 mongoose
-  .connect(process.env.MONGODB_URI);
+  .connect(process.env.MONGODB_URI)
+  .then((ok) => {
+    console.log("isOk");
+  })
+  .catch((err) => {
+    console.log({ message: err.message });
+  });
 
 //======== CLOUDINARY =================//
 const cloudinary = require("cloudinary").v2;
@@ -32,7 +37,6 @@ app.get("/", (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
-
 
 app.all("*", (req, res) => {
   res.status(400).json("This route dose not exist ...!");

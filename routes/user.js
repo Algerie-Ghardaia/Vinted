@@ -22,17 +22,16 @@ const User = require("../models/User");
 //=========== EFFECTUER UNE ISCRIPTION NOUVEAU UTILISATEUR =======//
 router.post("/user/signup", async (req, res) => {
   try {
-    const { username, email, password,newsletter} = req.body
+    const { username, email, password, newsletter } = req.body;
     const salt = uid2(21);
     const token = uid2(54);
     const hash = SHA256(password + salt).toString(encBase64);
-
 
     if (!username || !email || !password) {
       return res.status(400).json("Missing parameters");
     }
 
-    const userPresence = await User.findOne({email});
+    const userPresence = await User.findOne({ email });
     if (userPresence) {
       return res.status(200).json({ message: "Email already exists" });
     }
@@ -50,9 +49,9 @@ router.post("/user/signup", async (req, res) => {
       salt: salt,
       hash: hash,
       token: token,
-      dateTime:{
+      dateTime: {
         date: Date,
-        time : Time
+        time: Time,
       },
     });
     await newUser.save();
@@ -74,7 +73,7 @@ router.post("/user/signup", async (req, res) => {
 //=========== AUTHENTIFICATION =======//
 router.post("/user/login", async (req, res) => {
   try {
-    const {email, password} = req.body
+    const { email, password } = req.body;
     const login = await User.findOne({ email });
     if (!login) {
       return res.status(401).json({ message: "Email or password incorrect" });
