@@ -39,6 +39,7 @@ app.get("/", (req, res) => {
   }
 });
 
+
 app.all("*", (req, res) => {
   res.status(400).json("This route dose not exist ...!");
 });
