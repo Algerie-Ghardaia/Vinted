@@ -45,17 +45,17 @@ router.post(
             TAILLE: size,
           },
           {
-            ÉTAT: condition,
+            ETAT: condition,
           },
           {
-            COULEUR: color,
+            color: color,
           },
           {
             EMPLACEMENT: city,
           },
         ],
         product_image: cloudinaryRes,
-        owner: req.user,
+        owner: req.user._id,
       });
 
       await newOffer.save();
