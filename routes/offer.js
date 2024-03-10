@@ -23,18 +23,19 @@ router.post(
     try {
       const { description, price, condition, city, brand, size, color, title } =
         req.body;
-        const objImg ={}
         if (req.files === null || req.files.pictures.length === 0) {
           return res.json("No file uploaded!");
         }
         const arrayOfFilesUrl = [];
         const picturesToUpload = req.files.pictures;
-        for (let i = 0; i < picturesToUpload.length; i++) {
-          const picture = picturesToUpload[i];
-          const result = await cloudinary.uploader.upload(
-            convertToBase64(picture)
-          );
-           arrayOfFilesUrl.push(objImg.img = `Img ${i+1} : ${result.secure_url} `);
+        const arrayOfPromises = picturesToUpload.map((picture) => {
+          return cloudinary.uploader.upload(convertToBase64(picture));
+        });
+  
+        const result = await Promise.all(arrayOfPromises);
+        for (let i = 0; i < result.length; i++) {
+         //result[i].secure_url
+         arrayOfFilesUrl.push(result[i])
         }
 
       const newOffer = new Offer({
