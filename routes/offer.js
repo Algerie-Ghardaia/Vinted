@@ -23,11 +23,19 @@ router.post(
     try {
       const { description, price, condition, city, brand, size, color, title } =
         req.body;
-      const picture = req.files.picture;
-
-      const cloudinaryRes = await cloudinary.uploader.upload(
-        convertToBase64(picture)
-      );
+        const objImg ={}
+        if (req.files === null || req.files.pictures.length === 0) {
+          return res.json("No file uploaded!");
+        }
+        const arrayOfFilesUrl = [];
+        const picturesToUpload = req.files.pictures;
+        for (let i = 0; i < picturesToUpload.length; i++) {
+          const picture = picturesToUpload[i];
+          const result = await cloudinary.uploader.upload(
+            convertToBase64(picture)
+          );
+           arrayOfFilesUrl.push(objImg.img = `Img ${i+1} : ${result.secure_url} `);
+        }
 
       const newOffer = new Offer({
         dateTime: {
@@ -54,7 +62,7 @@ router.post(
             EMPLACEMENT: city,
           },
         ],
-        product_image: cloudinaryRes,
+        product_image: arrayOfFilesUrl,
         owner: req.user,
       });
 
@@ -128,4 +136,6 @@ router.get("/offers", async (req, res) => {
 });
 //===========// FIND ARTICLE BY  //================//
 
+
 module.exports = router;
+
